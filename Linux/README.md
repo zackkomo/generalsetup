@@ -1,3 +1,31 @@
+# Table of Contents  
+- [Table of Contents](#table-of-contents)
+- [1. Update & upgrade, install and remove](#1-update--upgrade-install-and-remove)
+  - [Update & upgrade](#update--upgrade)
+  - [Install](#install)
+  - [Delete](#delete)
+- [2. Set up SSH](#2-set-up-ssh)
+  - [Install openSSH](#install-openssh)
+  - [Enable and start service](#enable-and-start-service)
+  - [Configure (optional)](#configure-optional)
+- [3. Set up Firewall](#3-set-up-firewall)
+  - [Install UFW](#install-ufw)
+  - [Configure UFW](#configure-ufw)
+- [4. MFA for SSH (Google Authenticator)](#4-mfa-for-ssh-google-authenticator)
+  - [Install](#install-1)
+  - [Options](#options)
+  - [Pair with ssh](#pair-with-ssh)
+- [5. Send email upon SSH login](#5-send-email-upon-ssh-login)
+  - [Install](#install-2)
+  - [Configure](#configure)
+  - [Bashrc](#bashrc)
+- [6. Technitium DNS server on linux](#6-technitium-dns-server-on-linux)
+  - [Install](#install-3)
+  - [Configure](#configure-1)
+- [Miscellaneous](#miscellaneous)
+  - [Time wrong (Arch)](#time-wrong-arch)
+
+
 # 1. Update & upgrade, install and remove
 ## Update & upgrade
 Debian:
@@ -99,11 +127,13 @@ sudo ufw enable
 sudo ufw status
 ~~~
 # 4. MFA for SSH (Google Authenticator) 
+## Install
 Arch:
 ~~~bash
 sudo pacman -S libpam-google-authenticator
 google-authenticator
 ~~~
+## Options
 1. Do you want authentication tokens to be time-based?
 
     <font color="green"> y </font>
@@ -123,6 +153,7 @@ between client and server.
 
     <font color="red"> n </font>
 
+## Pair with ssh
 Next run this to make ssh use google-auth. 
 ~~~bash
 echo "auth required pam_google_authenticator.so" | sudo tee -a /etc/pam.d/sshd
@@ -133,7 +164,8 @@ echo "ChallengeResponseAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
 echo "AuthenticationMethods publickey,password publickey,keyboard-interactive" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl restart sshd.service
 ~~~
-# 4. Send email upon SSH login 
+# 5. Send email upon SSH login 
+## Install
 Arch:
 ~~~bash
 sudo pacman -Sy sendmail
@@ -144,6 +176,7 @@ Start Services
 sudo systemctl start postfix
 sudo systemctl enable postfix
 ~~~
+## Configure
 Point postfix to gmail:
 
 ~~~bash
@@ -168,6 +201,7 @@ sudo chmod 400 /etc/postfix/sasl_passwd
 sudo postmap /etc/postfix/sasl_passwd
 systemctl restart postfix
 ~~~
+## Bashrc
 Then in your **.bashrc** file add:
 ~~~bash
 if [ -n "$SSH_CLIENT" ]; then
@@ -176,7 +210,18 @@ if [ -n "$SSH_CLIENT" ]; then
     echo $TEXT|mail -s <SUBJECT> <RECIPIENT EMAIL>
 fi
 ~~~
-
+# 6. Technitium DNS server on linux
+## Install
+~~~bash
+curl -sSL https://download.technitium.com/dns/install.sh | sudo bash
+sudo ufw allow 5380
+~~~
+## Configure
+Insert custom blocklist here
+~~~bash
+sudo touch /etc/dns/config/blocklists/blocklist.txt
+~~~
+and go to **[servername]**:5380 to configure through a browser.
 # Miscellaneous
 ## Time wrong (Arch)
 Use **sudo timedatectl status** to make sure your time zone is correct. Then:
