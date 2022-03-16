@@ -215,6 +215,7 @@ fi
 ~~~bash
 curl -sSL https://download.technitium.com/dns/install.sh | sudo bash
 sudo ufw allow 5380
+sudo ufw allow 53
 ~~~
 ## Configure
 Insert custom blocklist here
