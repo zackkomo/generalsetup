@@ -22,6 +22,11 @@
 - [6. Technitium DNS server on linux](#6-technitium-dns-server-on-linux)
   - [Install](#install-3)
   - [Configure](#configure-1)
+- [7. OpenVPN on linux](#7-openvpn-on-linux)
+  - [Dynamic DNS](#dynamic-dns)
+  - [Install](#install-4)
+  - [Configure Server and launch service](#configure-server-and-launch-service)
+  - [Clients](#clients)
 - [Miscellaneous](#miscellaneous)
   - [Time wrong (Arch)](#time-wrong-arch)
 
@@ -223,6 +228,50 @@ Insert custom blocklist here
 sudo touch /etc/dns/config/blocklists/blocklist.txt
 ~~~
 and go to **[servername]**:5380 to configure through a browser.
+
+
+# 7. OpenVPN on linux
+
+1. Make sure the device running OpenVPN has a static IP.
+2. Make sure the router in the network is forwarding to the right port.
+3. Make sure the router's network is given a static IP from the ISP or that a dynamic DNS service is set up.
+
+## Dynamic DNS
+ISP's will switch out your IP address every couple of weeks. This means that if you plan on VPN-ing in using your IP, it may change on you. Look up a free DDNS provider like [dynu.com](https://www.dynu.com/) and set up an account. Then on the server do the following:
+~~~bash
+sudo EDITOR=nano crontab -e
+
+*/15 * * * * wget -O dynulog -4 "https://api.dynu.com/nic/update?hostname=example.dynu.com&myip=10.0.0.0&myipv6=no&username=someusername&password=somepassword"
+~~~
+and replace "example.dynu.com" with your hostname and "someusername" and "somepassword" with the username and password. For the password use the hashed version using [this](https://www.dynu.com/NetworkTools/Hash) and use the MD5 hash.
+
+To make sure it worked, copy and paste the wget portion and onward in the temrinal and cat out the log. You should get "no change" or "good" followed by the new IP.
+
+## Install
+~~~bash
+pacman -S openvpn curl
+sudo ufw allow 1194
+curl -O https://raw.githubusercontent.com/Angristan/openvpn-install/master/openvpn-install.sh
+chmod +x openvpn-install.sh
+sudo ./openvpn-install.sh
+~~~
+## Configure Server and launch service
+
+Provide the client name the VPN should expect and encrypt with a password. Keep everything else default UNLESS:
+1. you want to use your own DNS server, switch that)
+2. you are using DDNS, provide the DDNS URL where it asks for the IP 
+At the end it should generate a .ovpn file. Cat it and make sure the line starting with "remote" has your DDNS hostname.
+
+Then, if the service isn't running and you get permission errors, do the following:
+~~~bash
+sudo chown -R openvpn:network /etc/openvpn/ /var/log/openvpn/
+sudo systemctl start openvpn-server@server.service
+sudo systemctl status openvpn-server@server.service
+~~~
+ ## Clients
+
+ Install OpenVPN Client on your devices and use the .ovpn file from the server to login.
+
 # Miscellaneous
 ## Time wrong (Arch)
 Use **sudo timedatectl status** to make sure your time zone is correct. Then:

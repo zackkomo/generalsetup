@@ -4,7 +4,7 @@ You can use VScode as a code editor for cpp, or you can use and IDE like CLION. 
 # 2. Compiler
 On a windows device you can use MinGW, visual studio c++ or CLion. On a linux device you can install the cpp compiler from the package manager.
 
-# 2. CMake
+# 3. CMake
 CMake is software meant to help in compilation. You can use CMakeFiles to specify dependencies and generate native tools to your system and compiler. Once installed, you can have a main function in your top directory:
 
 ~~~cpp
@@ -27,9 +27,15 @@ project("cpp-game-engine")
 add_executable(main main.cpp)
 ~~~
 
-Next, create a build directory in the root folder called **build** and inside it run the following:
+Next, create a build directory in the root folder called **build** and inside it run the following on linux:
 ~~~bash
 cmake .. # point cmake to the top most CMakeLists.txt
 make     # build the project
 ~~~
 In the build folder an executable called **main** should appear. Running that is your main function.
+
+On Windows, in the build folder run:
+~~~
+cmake --build .
+~~~
+In the build folder an executable called **main.exe** should appear. Running that is your main function.
