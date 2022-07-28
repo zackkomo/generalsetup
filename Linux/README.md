@@ -3,7 +3,11 @@
 - [1. Update & upgrade, install and remove](#1-update--upgrade-install-and-remove)
   - [Update & upgrade](#update--upgrade)
   - [Install](#install)
+    - [Debian:](#debian)
+    - [Arch:](#arch)
   - [Delete](#delete)
+    - [Debian:](#debian-1)
+    - [Arch:](#arch-1)
 - [2. Set up SSH](#2-set-up-ssh)
   - [Install openSSH](#install-openssh)
   - [Enable and start service](#enable-and-start-service)
@@ -44,26 +48,37 @@ Arch:
 sudo pacman -Syu
 ~~~
 ## Install
-Debian:
+### Debian:
 ~~~bash
 sudo apt-get install <package name>
 ~~~
 
-Arch:
+### Arch:
 ~~~bash
 sudo pacman -S <package name>
 ~~~
-
+On arch you also may want to enable using the AUR. Make sure you have git:
+~~~bash
+sudo pacman -S git base-devel
+~~~
+Then install the package
+~~~bash
+git clone https://aur.archlinux.org/<pkgName>.git
+cd <pkgName>/
+makepkg -sri
+~~~
 ## Delete
-Debian:
+### Debian:
 ~~~bash
 sudo apt-get --purge remove <package name>
 ~~~
 
-Arch:
+### Arch:
 ~~~bash
 sudo pacman -Rn <package name>
 ~~~
+And for an AUR installed package you can still remove with pacman.
+
 # 2. Set up SSH
 ## Install openSSH
 Debian:
