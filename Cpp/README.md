@@ -39,3 +39,16 @@ On Windows, in the build folder run:
 cmake --build .
 ~~~
 In the build folder an executable called **main.exe** should appear. Running that is your main function.
+
+
+# 3. VS code debugging
+
+Install the following extensions:
+- CMake
+- CMakeTools
+- C/C++
+
+On the left pane find the "CMake" tile and click on it. A tab should open up and in the top right corner of the tab, click `Configure all projects`. If you want to change the CMAKE configurations, you can add commands to the `settings.json`. For example, to change the generator, add `"cmake.generator": "Unix Makefiles"` to the json to use Unix Makefiles.
+
+In the tab, all the targets should appear. If you set a breakpoint in the code and then right click the target you want in the tab and select `Debug` it will now debug.
+

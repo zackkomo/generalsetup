@@ -1,1 +1,2 @@
 # generalsetup
+This repository contains notes and instructions on setting up and using different tools. Some examples include setting up common or useful tools for [Linux](Linux/README.md), or setting up [LaTex](LaTex/README.md) Compiling on your device.
