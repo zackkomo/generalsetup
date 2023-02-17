@@ -294,3 +294,8 @@ Use **sudo timedatectl status** to make sure your time zone is correct. Then:
 sudo systemctl enable --now systemd-timesyncd.service
 sudo timedatectl set-ntp true
 ~~~
+
+# Usefull Commands
+~~~bash
+ip -br a             # Lists interfaces with IPs, MACs and status (UP/DOWN)
+~~~
