@@ -130,6 +130,16 @@ To ssh into the device:
 ~~~
 ssh -p <port #> <username>@<ip>
 ~~~
+On some distros, like Ubuntu 22.10 and later, the ssh daemon (sshd) uses socket-based activation. This makes it ignore the 
+**/etc/ssh/sshd_config** file. To revert to using the config file, run:
+~~~bash
+systemctl disable --now ssh.socket
+rm -f /etc/systemd/system/ssh.service.d/00-socket.conf
+rm -f /etc/systemd/system/ssh.socket.d/addresses.conf
+systemctl daemon-reload
+systemctl enable --now ssh.service
+~~~
+
 # 3. Set up Firewall
 ## Install UFW
 Debian:
