@@ -103,7 +103,7 @@ sudo systemctl start sshd
 systemctl status sshd
 ~~~
 ## Configure (optional)
-Using a text editor (i.e. nano, vim..) edit the **/etc/sshsshd_config** file:
+Using a text editor (i.e. nano, vim..) edit the **/etc/ssh/sshd_config** file:
 ~~~bash
 Port 22 
 PermitRootLogin no
