@@ -1,38 +1,44 @@
-# Table of Contents  
-- [Table of Contents](#table-of-contents)
-- [1. Update & upgrade, install and remove](#1-update--upgrade-install-and-remove)
-  - [Update & upgrade](#update--upgrade)
-  - [Install](#install)
-    - [Debian:](#debian)
-    - [Arch:](#arch)
-  - [Delete](#delete)
-    - [Debian:](#debian-1)
-    - [Arch:](#arch-1)
+# Table of contents
+- [1. Update & upgrade, install and remove](#1-update---upgrade--install-and-remove)
+  * [Update & upgrade](#update---upgrade)
+  * [Install](#install)
+    + [Debian:](#debian-)
+    + [Arch:](#arch-)
+  * [Delete](#delete)
+    + [Debian:](#debian--1)
+    + [Arch:](#arch--1)
 - [2. Set up SSH](#2-set-up-ssh)
-  - [Install openSSH](#install-openssh)
-  - [Enable and start service](#enable-and-start-service)
-  - [Configure (optional)](#configure-optional)
+  * [Install openSSH](#install-openssh)
+  * [Enable and start service](#enable-and-start-service)
+  * [Configure (optional)](#configure--optional-)
 - [3. Set up Firewall](#3-set-up-firewall)
-  - [Install UFW](#install-ufw)
-  - [Configure UFW](#configure-ufw)
-- [4. MFA for SSH (Google Authenticator)](#4-mfa-for-ssh-google-authenticator)
-  - [Install](#install-1)
-  - [Options](#options)
-  - [Pair with ssh](#pair-with-ssh)
-- [5. Send email upon SSH login](#5-send-email-upon-ssh-login)
-  - [Install](#install-2)
-  - [Configure](#configure)
-  - [Bashrc](#bashrc)
-- [6. Technitium DNS server on linux](#6-technitium-dns-server-on-linux)
-  - [Install](#install-3)
-  - [Configure](#configure-1)
-- [7. OpenVPN on linux](#7-openvpn-on-linux)
-  - [Dynamic DNS](#dynamic-dns)
-  - [Install](#install-4)
-  - [Configure Server and launch service](#configure-server-and-launch-service)
-  - [Clients](#clients)
+  * [Install UFW](#install-ufw)
+  * [Configure UFW](#configure-ufw)
+- [4. Remote with GUI](#4-remote-with-gui)
+  * [Install](#install-1)
+  * [Options](#options)
+- [5. MFA for SSH (Google Authenticator)](#5-mfa-for-ssh--google-authenticator-)
+  * [Install](#install-2)
+  * [Options](#options-1)
+  * [Pair with ssh](#pair-with-ssh)
+- [6. Send email upon SSH login](#6-send-email-upon-ssh-login)
+  * [Install](#install-3)
+  * [Configure](#configure)
+  * [Bashrc](#bashrc)
+- [7. Technitium DNS server on linux](#7-technitium-dns-server-on-linux)
+  * [Install](#install-4)
+  * [Configure](#configure-1)
+- [8. OpenVPN on linux](#8-openvpn-on-linux)
+  * [Dynamic DNS](#dynamic-dns)
+  * [Install](#install-5)
+  * [Configure Server and launch service](#configure-server-and-launch-service)
+  * [Clients](#clients)
 - [Miscellaneous](#miscellaneous)
-  - [Time wrong (Arch)](#time-wrong-arch)
+  * [Time wrong (Arch)](#time-wrong--arch-)
+- [Usefull Commands](#usefull-commands)
+
+<!-- <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small> -->
+
 
 
 # 1. Update & upgrade, install and remove
@@ -74,7 +80,7 @@ sudo apt-get --purge remove <package name>
 ~~~
 
 ### Arch:
-~~~bash
+~~~
 sudo pacman -Rn <package name>
 ~~~
 And for an AUR installed package you can still remove with pacman.
@@ -146,7 +152,38 @@ sudo ufw delete <port number>
 sudo ufw enable
 sudo ufw status
 ~~~
-# 4. MFA for SSH (Google Authenticator) 
+# 4. Remote with GUI
+You can use two types of protocols: remote desktop protocol (RDP) and virtual network computing (VNC). The former creates virtual desktop sessions while the latter only shows the physical display of what the remote user sees. VNC is platform-agnostic and usually preferred for Linux, but I have more luck with rdp.
+## Install
+Debian:
+~~~bash
+sudo apt install xrdp -y
+sudo systemctl start xrdp
+~~~
+Arch
+~~~bash
+sudo pacman -S xrdp
+sudo systemctl start xrdp
+~~~
+## Options
+In `/etc/xrdp/xrdp.ini` you can set options like the port (default is `3389`) among other settings.
+
+Create a `.xsession` in your user's home directory, and add the desktop environment you prefer. Examples are `xfce4-session` or `gnome-session`.
+
+You can also add a `.xsessionrc`file in your user's home directory and export some variables. For Ubuntu you can do:
+~~~bash
+export GNOME_SHELL_SESSION_MODE=ubuntu
+export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+~~~
+
+To apply the settings, don't forget to
+~~~bash
+sudo systemctl restart xrdp
+~~~
+
+
+
+# 5. MFA for SSH (Google Authenticator) 
 ## Install
 Arch:
 ~~~bash
@@ -184,7 +221,7 @@ echo "ChallengeResponseAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
 echo "AuthenticationMethods publickey,password publickey,keyboard-interactive" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl restart sshd.service
 ~~~
-# 5. Send email upon SSH login 
+# 6. Send email upon SSH login 
 ## Install
 Arch:
 ~~~bash
@@ -230,7 +267,7 @@ if [ -n "$SSH_CLIENT" ]; then
     echo $TEXT|mail -s <SUBJECT> <RECIPIENT EMAIL>
 fi
 ~~~
-# 6. Technitium DNS server on linux
+# 7. Technitium DNS server on linux
 ## Install
 ~~~bash
 curl -sSL https://download.technitium.com/dns/install.sh | sudo bash
@@ -245,7 +282,7 @@ sudo touch /etc/dns/config/blocklists/blocklist.txt
 and go to **[servername]**:5380 to configure through a browser.
 
 
-# 7. OpenVPN on linux
+# 8. OpenVPN on linux
 
 1. Make sure the device running OpenVPN has a static IP.
 2. Make sure the router in the network is forwarding to the right port.
