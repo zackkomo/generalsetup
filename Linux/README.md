@@ -1,40 +1,41 @@
 # Table of contents
-- [1. Update & upgrade, install and remove](#1-update---upgrade--install-and-remove)
-  * [Update & upgrade](#update---upgrade)
-  * [Install](#install)
-    + [Debian:](#debian-)
-    + [Arch:](#arch-)
-  * [Delete](#delete)
-    + [Debian:](#debian--1)
-    + [Arch:](#arch--1)
+- [Table of contents](#table-of-contents)
+- [1. Update \& upgrade, install and remove](#1-update--upgrade-install-and-remove)
+  - [Update \& upgrade](#update--upgrade)
+  - [Install](#install)
+    - [Debian:](#debian)
+    - [Arch:](#arch)
+  - [Delete](#delete)
+    - [Debian:](#debian-1)
+    - [Arch:](#arch-1)
 - [2. Set up SSH](#2-set-up-ssh)
-  * [Install openSSH](#install-openssh)
-  * [Enable and start service](#enable-and-start-service)
-  * [Configure (optional)](#configure--optional-)
+  - [Install openSSH](#install-openssh)
+  - [Enable and start service](#enable-and-start-service)
+  - [Configure (optional)](#configure-optional)
 - [3. Set up Firewall](#3-set-up-firewall)
-  * [Install UFW](#install-ufw)
-  * [Configure UFW](#configure-ufw)
+  - [Install UFW](#install-ufw)
+  - [Configure UFW](#configure-ufw)
 - [4. Remote with GUI](#4-remote-with-gui)
-  * [Install](#install-1)
-  * [Options](#options)
-- [5. MFA for SSH (Google Authenticator)](#5-mfa-for-ssh--google-authenticator-)
-  * [Install](#install-2)
-  * [Options](#options-1)
-  * [Pair with ssh](#pair-with-ssh)
+  - [Install](#install-1)
+  - [Options](#options)
+- [5. MFA for SSH (Google Authenticator)](#5-mfa-for-ssh-google-authenticator)
+  - [Install](#install-2)
+  - [Options](#options-1)
+  - [Pair with ssh](#pair-with-ssh)
 - [6. Send email upon SSH login](#6-send-email-upon-ssh-login)
-  * [Install](#install-3)
-  * [Configure](#configure)
-  * [Bashrc](#bashrc)
+  - [Install](#install-3)
+  - [Configure](#configure)
+  - [Bashrc](#bashrc)
 - [7. Technitium DNS server on linux](#7-technitium-dns-server-on-linux)
-  * [Install](#install-4)
-  * [Configure](#configure-1)
+  - [Install](#install-4)
+  - [Configure](#configure-1)
 - [8. OpenVPN on linux](#8-openvpn-on-linux)
-  * [Dynamic DNS](#dynamic-dns)
-  * [Install](#install-5)
-  * [Configure Server and launch service](#configure-server-and-launch-service)
-  * [Clients](#clients)
+  - [Dynamic DNS](#dynamic-dns)
+  - [Install](#install-5)
+  - [Configure Server and launch service](#configure-server-and-launch-service)
+  - [Clients](#clients)
 - [Miscellaneous](#miscellaneous)
-  * [Time wrong (Arch)](#time-wrong--arch-)
+  - [Time wrong (Arch)](#time-wrong-arch)
 - [Usefull Commands](#usefull-commands)
 
 <!-- <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small> -->
@@ -254,11 +255,17 @@ echo "smtp_sasl_security_options = noanonymous" | sudo tee -a /etc/postfix/main.
 echo "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt" | sudo tee -a /etc/postfix/main.cf
 echo "smtp_use_tls = yes" | sudo tee -a /etc/postfix/main.cf
 ~~~
+
+To avoid warnings, edit the ``/etc/postfix/main.cf`` file to comment out the line:
+~~~bash
+# relayhost=
+~~~
+
 Save gmail to use in :
 ~~~bash
 sudo nano /etc/postfix/sasl_passwd
 ~~~
-by typing:
+by typing (for gmail, you may need to generate an app-password which is a 16 character password with spaces, and add that as the password):
 ~~~
 [smtp.gmail.com]:587    <username>@gmail.com:<password>
 ~~~
