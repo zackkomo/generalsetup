@@ -232,6 +232,10 @@ echo "ChallengeResponseAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
 echo "AuthenticationMethods publickey,password publickey,keyboard-interactive" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl restart sshd.service
 ~~~
+
+If it doesn't work after restarting the service, you may need to restart the
+system.
+
 # 6. Send email upon SSH login 
 ## Install
 Arch:
